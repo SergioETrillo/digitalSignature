@@ -1,0 +1,6 @@
+D:\Training\Cryptography\Digital Signature\8-practical-cryptography-dotnet-m8-exercise-files\DigitalSignature\bin\Debug\DigitalSignature.exe
+D:\Training\Cryptography\Digital Signature\8-practical-cryptography-dotnet-m8-exercise-files\DigitalSignature\bin\Debug\DigitalSignature.pdb
+D:\Training\Cryptography\Digital Signature\8-practical-cryptography-dotnet-m8-exercise-files\DigitalSignature\obj\Debug\DigitalSignature.csprojResolveAssemblyReference.cache
+D:\Training\Cryptography\Digital Signature\8-practical-cryptography-dotnet-m8-exercise-files\DigitalSignature\obj\Debug\DigitalSignature.csproj.CoreCompileInputs.cache
+D:\Training\Cryptography\Digital Signature\8-practical-cryptography-dotnet-m8-exercise-files\DigitalSignature\obj\Debug\DigitalSignature.exe
+D:\Training\Cryptography\Digital Signature\8-practical-cryptography-dotnet-m8-exercise-files\DigitalSignature\obj\Debug\DigitalSignature.pdb
