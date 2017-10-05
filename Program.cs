@@ -2,6 +2,7 @@
 using System.IO;
 using System.Security;
 using System.Security.Cryptography;
+using System.Security.Policy;
 using System.Text;
 
 namespace CryptographyInDotNet
@@ -18,36 +19,36 @@ namespace CryptographyInDotNet
             }
         }
 
+        public static byte[] Encode(string file)
+        {
+            return Encoding.UTF8.GetBytes(LoadJson(file));
+        }
+
+        public static byte[] Hash(byte[] data)
+        {
+            return SHA256.Create().ComputeHash(data);
+        }
+
+        public static byte[] SignData(byte[] hashedData, DigitalSignature digitalSignature)
+        {
+            digitalSignature.UseContainer();
+
+            return digitalSignature.SignData(hashedData);
+        }
+
         static void Main()
         {
-            string jsonFile = LoadJson("license.lic");
-            string tamperedFile = LoadJson("tampered.lic");
-
-            var docTampered = Encoding.UTF8.GetBytes(tamperedFile);
-            var document = Encoding.UTF8.GetBytes(jsonFile);
-
-            byte[] hashedDocument;
-            byte[] tamperedHashedDocument;
-
-            using (var sha256 = SHA256.Create())
-            {
-                hashedDocument = sha256.ComputeHash(document);
-            }
-
-            using (var sha256 = SHA256.Create())
-            {
-                tamperedHashedDocument = sha256.ComputeHash(docTampered);
-            }
-
             // setup keys
             var storeKey = new StoreKeyLocal("SergioBag");
             var digitalSignature = new DigitalSignature(storeKey);
 
+            var hashDocument = Hash(Encode("license.lic"));
+            var tamperedHashedDocument = Hash(Encode("tampered.lic"));
 
-            digitalSignature.UseContainer();
+            var signature = SignData(hashDocument, digitalSignature);
 
-            var signature = digitalSignature.SignData(hashedDocument);
-            var verified = digitalSignature.VerifySignature(hashedDocument, signature);
+
+            var verified = digitalSignature.VerifySignature(hashDocument, signature);
             var verifiedTampered = digitalSignature.VerifySignature(tamperedHashedDocument, signature);
             
             Console.WriteLine("Digital Signature Demonstration in .NET");
@@ -55,14 +56,14 @@ namespace CryptographyInDotNet
             Console.WriteLine();            
             Console.WriteLine();
             Console.WriteLine("   Original Text = " + 
-                Encoding.Default.GetString(document));
+                Encoding.Default.GetString(Encode("license.lic")));
 
             Console.WriteLine();
             Console.WriteLine("   Digital Signature = " + 
                 Convert.ToBase64String(signature));
             Console.WriteLine();
             Console.WriteLine("   Hash original Doc= " +
-                              Convert.ToBase64String(hashedDocument));
+                              Convert.ToBase64String(hashDocument));
             Console.WriteLine("   Hash tampered Doc= " +
                               Convert.ToBase64String(tamperedHashedDocument));
             Console.WriteLine();
